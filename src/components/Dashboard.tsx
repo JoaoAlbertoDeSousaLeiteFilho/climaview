@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AddCityForm } from './AddCityForm';
+import { CityList } from './CityList';
 import type { ICity } from '../interfaces/ICity';
 
 export function Dashboard() {
@@ -15,32 +16,44 @@ export function Dashboard() {
     setCities([...cities, newCity]);
   };
 
+  // função de remover (crud)
+  const handleRemoveCity = (id: number) => {
+    setCities(cities.filter(city => city.id !== id));
+  };
+
+  // função de favoritar (interação)
+  const handleToggleFavorite = (id: number) => {
+    setCities(cities.map(city => 
+      city.id === id ? { ...city, isFavorite: !city.isFavorite } : city
+    ));
+  };
+
   // logica de calculo
   const totalCities = cities.length;
   
-  // Filtra cidades com sol (procurando palavras no texto da API)
+  // filtra cidades com sol (procurando palavras no texto da API)
   const sunnyCities = cities.filter(city => 
     city.condition.toLowerCase().includes('limpo') || 
     city.condition.toLowerCase().includes('sol')
   ).length;
 
-  // Filtra cidades com chuva
+  // filtra cidades com chuva
   const rainyCities = cities.filter(city => 
     city.condition.toLowerCase().includes('chuva') || 
     city.condition.toLowerCase().includes('garoa')
   ).length;
 
-  // Filtra cidades frias (menos de 15 graus)
+  // filtra cidades frias 
   const coldCities = cities.filter(city => city.temperature < 15).length;
 
   return (
     <section className="bg-white p-4 rounded shadow-sm h-100">
       <h2 className="mb-4">Dashboard do Clima 🌤️</h2>
 
-      {/* 1. O formulário que criámos antes */}
+      {/* o formulário que criámos antes */}
       <AddCityForm onCityAdded={handleAddCity} />
 
-      {/* 2. Cartões de Estatísticas (Bootstrap) */}
+      {/* cartões de Estatísticas (Bootstrap) */}
       <div className="row mb-4">
         <div className="col-md-3">
           <div className="card bg-primary text-white mb-3 shadow-sm">
@@ -78,10 +91,16 @@ export function Dashboard() {
 
       <hr />
       <h5 className="mt-4 text-muted">Cidades Monitorizadas</h5>
+      
+      {/* lista de cidades com as funções de remover e favoritar */}
       {cities.length === 0 ? (
         <p className="text-muted italic small">Nenhuma cidade adicionada ainda.</p>
       ) : (
-        <p className="text-success small fw-bold">Lista de cidades em processamento...</p>
+        <CityList 
+          cities={cities} 
+          onRemove={handleRemoveCity} 
+          onToggleFavorite={handleToggleFavorite} 
+        />
       )}
     </section>
   );

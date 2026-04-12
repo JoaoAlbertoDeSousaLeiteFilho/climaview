@@ -17,6 +17,19 @@ function App() {
           </div>
         </div>
       </main>
+
+      {/* inicio do rodape*/}
+      <footer className="bg-dark text-white text-center py-3 mt-auto">
+        <div className="container">
+          {/* A tag address que o professor exigiu */}
+          <address className="mb-0 small">
+            <strong>Desenvolvido por:</strong> João Alberto de Sousa Leite Filho <br />
+            <strong>Data:</strong> 13 de Abril de 2026 <br />
+            Disciplina de Desenvolvimento de Software Web - Prof. Alexandre Almeida
+          </address>
+        </div>
+      </footer>
+      {/* -final do rodapw */}
     </div>
   )
 }
